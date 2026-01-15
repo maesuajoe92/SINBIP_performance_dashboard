@@ -22,8 +22,6 @@ def export_board_pdf(output_path: Path, title: str, kpis: dict, mom: dict | None
         ["Total SINBIP Revenue", fmt_currency(kpis["total_revenue"])],
         ["Avg Revenue per NBIP Location", fmt_currency(kpis["avg_revenue"])],
         ["Mobile Data Share", fmt_pct(kpis["data_share_pct"])],
-        ["Mobile Voice Share", fmt_pct(kpis["voice_share_pct"])],
-        ["Mobile SMS Share", fmt_pct(kpis["sms_share_pct"])],
         ["Zero-Revenue NBIP Sites", zero_names or "None"],
         ["Top Performing NBIP Site", f'{kpis["top_site"]} ({fmt_currency(kpis["top_site_value"])})'],
     ]
