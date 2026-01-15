@@ -22,8 +22,8 @@ SHEET22_NAME = os.getenv("SINBIP_SHEET22_NAME", "Sheet22")
 
 # Auth settings (replace in production)
 BOARD_USER = os.getenv("SINBIP_BOARD_USER", "board")
-BOARD_PASS = os.getenv("SINBIP_BOARD_PASS", "board123")
+BOARD_PASS = os.getenv("SINBIP_BOARD_PASS", "b0@rd!#$")
 MGMT_USER = os.getenv("SINBIP_MGMT_USER", "manager")
-MGMT_PASS = os.getenv("SINBIP_MGMT_PASS", "manager123")
+MGMT_PASS = os.getenv("SINBIP_MGMT_PASS", "m@nag3r!#$")
 
 APP_TITLE = os.getenv("SINBIP_APP_TITLE", "SINBIP Monthly KPI Performance Dashboard")
