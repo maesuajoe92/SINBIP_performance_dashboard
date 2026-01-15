@@ -2,8 +2,8 @@ import re
 import warnings
 import pandas as pd
 from pathlib import Path
-from .config import PRIMARY_EXCEL, SHEET22_NAME
-from .utils import normalize_columns
+from config import PRIMARY_EXCEL, SHEET22_NAME
+from utils import normalize_columns
 
 VOICE_COLS = [
     "NBIP-NBIP Calls Revenue",

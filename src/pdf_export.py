@@ -3,7 +3,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
-from .utils import fmt_currency, fmt_pct
+from utils import fmt_currency, fmt_pct
 
 
 def export_board_pdf(output_path: Path, title: str, kpis: dict, mom: dict | None, sheet22_ctx: dict) -> Path:

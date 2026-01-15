@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Optional
-from .config import BOARD_USER, BOARD_PASS, MGMT_USER, MGMT_PASS
+from config import BOARD_USER, BOARD_PASS, MGMT_USER, MGMT_PASS
 
 @dataclass(frozen=True)
 class User:

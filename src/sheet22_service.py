@@ -1,6 +1,6 @@
 import pandas as pd
 from typing import Optional, Dict, Any
-from .utils import safe_float
+from utils import safe_float
 
 def detect_target_total(sheet22: pd.DataFrame) -> Optional[float]:
     """
