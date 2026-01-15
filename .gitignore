@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -221,6 +220,6 @@ dist/
 build/
 *.log
 data/*.xlsx
+!data/SINBIP_MONTHLY_REPORT.xlsx
 .streamlit/secrets.toml
 tests/
->>>>>>>
