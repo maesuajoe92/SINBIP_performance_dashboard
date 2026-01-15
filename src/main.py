@@ -5,14 +5,14 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 
-from app.auth import authenticate, User
-from app.config import APP_TITLE, EXPORT_DIR
-from app.data_loader import load_all_months, load_sheet22
-from app.kpi_service import calculate_kpis, calc_mom, build_trend_series, VOICE_COLS, SMS_COLS
-from app.pdf_export import export_board_pdf
-from app.sheet22_service import build_sheet22_context
-from app.sparkline import build_location_trend_frame, multi_location_chart
-from app.utils import fmt_currency, fmt_pct, sort_month_sheets
+from src.auth import authenticate, User
+from src.config import APP_TITLE, EXPORT_DIR
+from src.data_loader import load_all_months, load_sheet22
+from src.kpi_service import calculate_kpis, calc_mom, build_trend_series, VOICE_COLS, SMS_COLS
+from src.pdf_export import export_board_pdf
+from src.sheet22_service import build_sheet22_context
+from src.sparkline import build_location_trend_frame, multi_location_chart
+from src.utils import fmt_currency, fmt_pct, sort_month_sheets
 
 
 st.set_page_config(page_title=APP_TITLE, layout="wide", initial_sidebar_state="collapsed")
