@@ -219,7 +219,7 @@ coverage.xml
 dist/
 build/
 *.log
-data/*.xlsx
-!data/SINBIP_MONTHLY_REPORT.xlsx
+#data/*.xlsx
+#!data/SINBIP_MONTHLY_REPORT.xlsx
 .streamlit/secrets.toml
 tests/
