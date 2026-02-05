@@ -18,7 +18,7 @@ optional board PDF export.
    pip install -r requirements.txt
 
 3) Put your Excel file at:
-   data/SINBIP_MONTHLY_REPORT.xlsx
+   data/SINBIP_MONTHLY_REPORT_UPDATED.xlsx
 
 4) Prepare monthly data as separate sheets inside the primary Excel file
    (e.g., mar_2024, apr_2024). The data/monthly folder is not ingested by the

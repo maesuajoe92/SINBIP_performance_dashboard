@@ -33,6 +33,11 @@ def inject_board_css():
             --text-muted: rgba(245, 247, 255, 0.65);
             --chip-bg: #1b1e27;
             --chip-border: #343846;
+            --login-shell-bg: radial-gradient(circle at top, #0d4950 0%, #062b32 52%, #051c22 100%);
+            --login-card-bg: linear-gradient(140deg, #0a3840 0%, #062a31 55%, #041a20 100%);
+            --login-field-bg: rgba(255, 255, 255, 0.12);
+            --login-field-border: rgba(255, 255, 255, 0.12);
+            --login-field-border-focus: rgba(255, 255, 255, 0.32);
         }
 
         html, body, .stApp {
@@ -172,6 +177,46 @@ def inject_board_css():
             border-color: #4b5164;
             background: #202634;
         }
+
+        /* Login layout */
+
+        /* User menu (top-right) */
+        .user-menu-wrap {
+            display: flex;
+            justify-content: flex-end;
+            margin: 0.25rem 0 1rem;
+        }
+        button[data-testid="stPopoverButton"] {
+            width: 42px !important;
+            height: 42px !important;
+            border-radius: 999px !important;
+            background: #0f2a31 !important;
+            border: 1px solid #1f3f49 !important;
+            color: #f5fbff !important;
+            font-size: 18px !important;
+            box-shadow: 0 10px 24px rgba(0,0,0,0.3);
+            transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+        }
+        button[data-testid="stPopoverButton"]:hover {
+            border-color: #2c5a69 !important;
+            box-shadow: 0 14px 32px rgba(0,0,0,0.45);
+            transform: translateY(-1px);
+        }
+        div[data-testid="stPopoverContent"] {
+            background: #0f1f26 !important;
+            border: 1px solid #2a3d47 !important;
+            border-radius: 14px !important;
+            padding: 0.5rem !important;
+            box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+        }
+        div[data-testid="stPopoverContent"] .stButton > button {
+            width: 100% !important;
+            background: transparent !important;
+            border: 1px solid #2f4752 !important;
+            color: #f5fbff !important;
+            border-radius: 10px !important;
+            font-weight: 700 !important;
+        }
         </style>
         """,
         unsafe_allow_html=True,
@@ -300,12 +345,16 @@ def load_model():
 # Auth + sidebar
 # -----------------------------
 def render_login():
-    st.title(APP_TITLE)
+    st.title("USER LOGIN")
     st.caption("Sign in to access SINBIP reporting views")
     with st.form("login"):
-        username = st.text_input("Username")
-        password = st.text_input("Password", type="password")
-        submitted = st.form_submit_button("Sign in")
+        username = st.text_input("Username", placeholder="Username")
+        password = st.text_input(
+            "Password",
+            type="password",
+            placeholder="Password",
+        )
+        submitted = st.form_submit_button("LOGIN", use_container_width=True)
         if submitted:
             user = authenticate(username or "", password or "")
             if not user:
@@ -315,18 +364,16 @@ def render_login():
                 st.success(f"Signed in as {user.role}")
                 st.rerun()
 
-
-def render_sidebar(user: User):
-    st.sidebar.title("Session")
-    st.sidebar.write(f"Signed in as **{user.username}** ({user.role})")
-    if st.sidebar.button("Logout"):
-        _set_user(None)
-        st.rerun()
-
-    if user.role == "management":
-        st.sidebar.info("You are in Management view.")
-    else:
-        st.sidebar.info("You are in Board view.")
+def render_user_menu(user: User):
+    col_spacer, col_menu = st.columns([8, 1])
+    with col_menu:
+        st.markdown('<div class="user-menu-wrap">', unsafe_allow_html=True)
+        with st.popover("👤"):
+            st.caption(f"Signed in as {user.username} ({user.role})")
+            if st.button("Logout", key="logout_button"):
+                _set_user(None)
+                st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
 
 
 # -----------------------------
@@ -351,8 +398,18 @@ def render_mom(mom: dict | None, mom_label: str | None):
     st.subheader("Month-on-Month Revenue Movement")
     if mom_label:
         st.caption(mom_label)
-    delta_label = f"{fmt_currency(mom['delta'])} ({mom['pct_change']:.1f}%)"
-    st.metric("MoM Revenue Change", fmt_currency(mom["current_total"]), delta=delta_label)
+    delta_value = float(mom.get("delta", 0.0))
+    pct_change = float(mom.get("pct_change", 0.0))
+    direction = "up" if delta_value > 0 else "down" if delta_value < 0 else "flat"
+    arrow = "▲" if direction == "up" else "▼" if direction == "down" else "■"
+    color = "#16a34a" if direction == "up" else "#dc2626" if direction == "down" else "#6b7280"
+
+    delta_label = f"{arrow} {fmt_currency(delta_value)} ({pct_change:.1f}%)"
+    st.markdown(
+        f"<div style='font-size:1.1rem; font-weight:600; color:{color};'>{delta_label}</div>",
+        unsafe_allow_html=True,
+    )
+    st.metric("MoM Revenue Change", fmt_currency(mom["current_total"]))
 
 
 def render_bar_chart(df: pd.DataFrame):
@@ -506,6 +563,8 @@ def render_board_view(model: dict):
                 kpis=kpis,
                 mom=mom,
                 sheet22_ctx=sheet22_ctx,
+                trend=model.get("trend"),
+                latest_name=latest_name,
             )
             with open(out_path, "rb") as f:
                 pdf_bytes = f.read()
@@ -575,7 +634,7 @@ def main():
         render_login()
         return
 
-    render_sidebar(user)
+    render_user_menu(user)
 
     model = load_model()
     if model is None:

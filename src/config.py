@@ -12,7 +12,7 @@ EXPORT_DIR = BASE_DIR / "exports"
 EXPORT_DIR.mkdir(exist_ok=True, parents=True)
 
 # Primary monthly Excel file (single snapshot)
-PRIMARY_EXCEL = Path(os.getenv("SINBIP_PRIMARY_EXCEL", str(DATA_DIR / "SINBIP_MONTHLY_REPORT.xlsx")))
+PRIMARY_EXCEL = Path(os.getenv("SINBIP_PRIMARY_EXCEL", str(DATA_DIR / "SINBIP_MONTHLY_REPORT_UPDATED.xlsx")))
 
 # Main revenue sheet: by default first sheet (0). You can override if needed.
 MAIN_SHEET_NAME = os.getenv("SINBIP_MAIN_SHEET_NAME", "").strip() or None  # None => first sheet

@@ -28,7 +28,10 @@ def _clean_columns(df: pd.DataFrame) -> pd.DataFrame:
     df.columns = normalize_columns(df.columns)
     for c in df.columns:
         if isinstance(c, str):
-            df[c] = pd.to_numeric(df[c], errors="ignore")
+            try:
+                df[c] = pd.to_numeric(df[c])
+            except (TypeError, ValueError):
+                pass
     return df
 
 def _read_month_sheet(xls: pd.ExcelFile, sheet_name: str) -> pd.DataFrame:
